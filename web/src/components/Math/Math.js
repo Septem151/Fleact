@@ -22,6 +22,9 @@ export class Math extends Component {
     }
 
     updateResult() {
+        if(!this.props.num1 || !this.props.num2) {
+            return;
+        }
         // Send POST request
         fetch('http://localhost:5000/math?num1=' + this.props.num1 + '&num2=' + this.props.num2 
             + '&op=' + this.props.operation, {
