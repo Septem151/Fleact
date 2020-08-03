@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import GreetingPage from './Greeting/GreetingPage';
 import TimePage from './Time/TimePage';
 import MathPage from './Math/MathPage';
-import './Content.css';
 
 export class Content extends Component {
     constructor(props) {

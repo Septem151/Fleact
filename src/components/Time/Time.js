@@ -21,7 +21,7 @@ export class Time extends Component {
 
     updateTime() {
         // Send GET request
-        fetch('http://localhost:5000/time' + (this.props.zone ? '?zone=' + this.props.zone : ''), {
+        fetch('/api/time' + (this.props.zone ? '?zone=' + this.props.zone : ''), {
             method: 'GET',
             headers: {
                 'Accept': 'application/json'

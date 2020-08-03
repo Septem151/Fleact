@@ -13,26 +13,18 @@ timezone_refs = {
 }
 
 
-@app.after_request
-def apply_cors(response):
-    response.headers['Access-Control-Allow-Origin'] = '*'
-    response.headers['Access-Control-Allow-Headers'] = '*'
-    response.headers['Access-Control-Allow-Methods'] = 'GET, POST'
-    return response
-
-
-@app.route('/health', methods=['GET'])
+@app.route('/api/health', methods=['GET'])
 def health_check():
     return jsonify({'status': 'OK', 'mode': app.config['ENV']})
 
 
-@app.route('/greeting', methods=['GET'])
+@app.route('/api/greeting', methods=['GET'])
 def greeting():
     name = request.args.get('name', 'world')
     return jsonify({'greeting': f'Hello {name}!'})
 
 
-@app.route('/time', methods=['GET'])
+@app.route('/api/time', methods=['GET'])
 def time():
     timezone = request.args.get('zone', 'UTC')
     simple = request.args.get('simple', 'false').lower()
@@ -64,7 +56,7 @@ def time():
     return jsonify(json_time)
 
 
-@app.route('/math', methods=['POST'])
+@app.route('/api/math', methods=['POST'])
 def mathematics():
     operation = request.args.get('op')
     num1 = request.args.get('num1')

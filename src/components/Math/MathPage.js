@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Math from './Math';
-import './Math.css';
 
 export class MathPage extends Component {
     constructor(props) {
@@ -42,13 +41,13 @@ export class MathPage extends Component {
                 <div className="center-div">
                     <label>
                         Number 1:
-                    <input type="text" onChange={this.handleNum1Change}></input>
+                    <input className="math-input" type="text" onChange={this.handleNum1Change}></input>
                     </label>
                 </div>
                 <div className="center-div">
                     <label>
                         Number 2:
-                <input type="text" onChange={this.handleNum2Change}></input>
+                <input className="math-input" type="text" onChange={this.handleNum2Change}></input>
                     </label>
                 </div>
                 <div className="btn-container mtop-1">

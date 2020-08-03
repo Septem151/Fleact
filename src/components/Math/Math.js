@@ -26,7 +26,7 @@ export class Math extends Component {
             return;
         }
         // Send POST request
-        fetch('http://localhost:5000/math?num1=' + this.props.num1 + '&num2=' + this.props.num2 
+        fetch('/api/math?num1=' + this.props.num1 + '&num2=' + this.props.num2 
             + '&op=' + this.props.operation, {
                 method: 'POST',
                 headers: {

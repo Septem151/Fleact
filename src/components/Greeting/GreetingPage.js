@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Greeting from './Greeting';
-import './Greeting.css';
 
 export class GreetingPage extends Component {
     constructor(props) {
@@ -24,7 +23,7 @@ export class GreetingPage extends Component {
             this.setState({
                 greeting: <Greeting name={this.state.name} />
             });
-        }else {
+        } else {
             this.setState({
                 greeting: <Greeting />
             })
@@ -38,7 +37,7 @@ export class GreetingPage extends Component {
                 <div className="center-div">
                     <label>
                         Name:
-                    <input type="text" value={this.state.name} onChange={this.handleChange} />
+                    <input className="greeting-input" type="text" value={this.state.name} onChange={this.handleChange} />
                     </label>
                 </div>
                 <div className="center-div">

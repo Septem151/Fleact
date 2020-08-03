@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Time from './Time';
-import './Time.css';
 
 export class TimePage extends Component {
     constructor(props) {
@@ -40,7 +39,7 @@ export class TimePage extends Component {
                 <div className="center-div">
                     <label>
                         Timezone:
-                    <input type="text" value={this.state.zone} onChange={this.handleChange} />
+                    <input className="time-input" type="text" value={this.state.zone} onChange={this.handleChange} />
                     </label>
                 </div>
                 <div className="center-div">
