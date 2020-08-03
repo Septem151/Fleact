@@ -16,7 +16,7 @@ function App() {
       <Content />
       <div className="footer-container">
         <small className="app-footer">© Copyright 2020 | Carson Mullins</small>
-        <a className="github-link" href="https://github.com"> </a>
+        <a className="github-link" href="https://github.com/Septem151/Fleact"> </a>
       </div>
     </div >
   );
