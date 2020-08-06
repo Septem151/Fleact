@@ -21,14 +21,19 @@ export class Time extends Component {
 
     updateTime() {
         // Send GET request
-        fetch('/api/time' + (this.props.zone ? '?zone=' + this.props.zone : ''), {
+        fetch('/api/time' + (this.props.zone ? '?zone=' + encodeURIComponent(this.props.zone) : ''), {
             method: 'GET',
             headers: {
                 'Accept': 'application/json'
             }
         })
             .then(response => response.json())
-            .then(data => this.setState({ time: data.formatted.number }));
+            .then(data => {
+                if('error' in data)
+                    this.setState({ time: data.error });
+                else
+                    this.setState({ time: data.formatted.number });
+            });
     }
 
     render() {

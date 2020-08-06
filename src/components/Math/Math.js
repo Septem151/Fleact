@@ -26,24 +26,21 @@ export class Math extends Component {
             return;
         }
         // Send POST request
-        fetch('/api/math?num1=' + this.props.num1 + '&num2=' + this.props.num2 
-            + '&op=' + this.props.operation, {
+        fetch('/api/math?num1=' + encodeURIComponent(this.props.num1) 
+            + '&num2=' + encodeURIComponent(this.props.num2) 
+            + '&op=' + encodeURIComponent(this.props.operation), {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json'
                 }
         })
                 .then(response => response.json())
-                .then(data => this.setState({result: data.equation}));
-        // Send GET request
-        // fetch('http://localhost:5000/greeting' + (this.props.name ? '?name=' + this.props.name : ''), {
-        //     method: 'GET',
-        //     headers: {
-        //         'Accept': 'application/json'
-        //     }
-        // })
-        //     .then(response => response.json())
-        //     .then(data => this.setState({ greeting: data.greeting }));
+                .then(data => {
+                    if('equation' in data)
+                        this.setState({result: data.equation});
+                    else
+                        this.setState({result: "Not a valid equation."});
+                });
     }
 
     render() {

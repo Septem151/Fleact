@@ -21,7 +21,7 @@ export class Greeting extends Component {
 
     updateGreeting() {
         // Send GET request
-        fetch('/api/greeting' + (this.props.name ? '?name=' + this.props.name : ''), {
+        fetch('/api/greeting' + (this.props.name ? '?name=' + encodeURIComponent(this.props.name) : ''), {
             method: 'GET',
             headers: {
                 'Accept': 'application/json'

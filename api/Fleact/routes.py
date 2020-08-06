@@ -29,9 +29,10 @@ def time():
     timezone = request.args.get('zone', 'UTC')
     simple = request.args.get('simple', 'false').lower()
     if (timezone not in pytz.common_timezones
-            and timezone not in timezone_refs) \
-            or simple not in ['true', '1', 'false', '0']:
-        abort(404)
+            and timezone not in timezone_refs):
+        return jsonify({'error': 'Not a valid timezone.'})
+    if simple not in ['true', '1', 'false', '0']:
+        abort(400)
     if timezone in timezone_refs:
         cur_time = datetime.now(tz=pytz.timezone(timezone_refs[timezone]))
     else:
