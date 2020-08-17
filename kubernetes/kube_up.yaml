@@ -1,0 +1,167 @@
+# Namespace
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: fleact
+  labels:
+    name: fleact
+---
+# ConfigMap
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fleact-config
+  namespace: fleact
+data:
+  ENV: "production"
+---
+# Deployment (Backend)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  namespace: fleact
+spec:
+  selector:
+    matchLabels:
+      app: fleact
+      tier: backend
+      track: stable
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: fleact
+        tier: backend
+        track: stable
+    spec:
+      containers:
+        - name: backend
+          image: "039706656811.dkr.ecr.us-east-2.amazonaws.com/fleact_backend:latest"
+          ports:
+            - name: http
+              containerPort: 5000
+          imagePullPolicy: Always
+          resources:
+            limits:
+              cpu: 500m
+            requests:
+              cpu: 200m
+          env:
+            - name: ENV
+              valueFrom:
+                configMapKeyRef:
+                  name: fleact-config
+                  key: ENV
+---
+# Service (Backend)
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+  namespace: fleact
+  labels:
+    app: fleact
+spec:
+  selector:
+    app: fleact
+    tier: backend
+  ports:
+  - protocol: TCP
+    port: 5000
+    targetPort: http
+---
+# Horizontal Pod Autoscaling (Backend)
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: backend
+  namespace: fleact
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: backend
+  minReplicas: 1
+  maxReplicas: 3
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 40
+---
+# Deployment (Frontend)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  namespace: fleact
+spec:
+  selector:
+    matchLabels:
+      app: fleact
+      tier: frontend
+      track: stable
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: fleact
+        tier: frontend
+        track: stable
+    spec:
+      containers:
+      - name: frontend
+        image: "039706656811.dkr.ecr.us-east-2.amazonaws.com/fleact_frontend:latest"
+        ports:
+        - name: http
+          containerPort: 80
+        imagePullPolicy: Always
+        resources:
+          limits:
+            cpu: 500m
+          requests:
+            cpu: 200m
+        lifecycle:
+          preStop:
+            exec:
+              command: ["/usr/sbin/nginx","-s","quit"]
+---
+# Service (Frontend)
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+  namespace: fleact
+spec:
+  selector:
+    app: fleact
+    tier: frontend
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+  type: LoadBalancer
+---
+# Horizontal Pod Autoscaling (Frontend)
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: frontend
+  namespace: fleact
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: frontend
+  minReplicas: 1
+  maxReplicas: 3
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 40

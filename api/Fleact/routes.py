@@ -3,7 +3,8 @@ from flask import jsonify, request, abort
 from datetime import datetime
 import pytz
 import math
-
+import socket
+import time as timer
 
 timezone_refs = {
     'CST': 'US/Central',
@@ -11,6 +12,30 @@ timezone_refs = {
     'MST': 'US/Mountain',
     'PST': 'US/Pacific',
 }
+
+
+@app.route('/api/intense', methods=['GET'])
+def intense():
+    amount = request.args.get('amount', 1000000000)
+    try:
+        amount = int(amount)
+    except (ValueError, TypeError):
+        return jsonify({'code': 400, 'error': 'Invalid amount parameter.'})
+    start = timer.perf_counter()
+    x = 0.0001
+    for i in range(0, amount):
+        x += math.sqrt(x)
+        if timer.perf_counter() - start >= 30:
+            return jsonify({'status': 'Timeout'})
+    return jsonify({'status': 'Finished'})
+
+
+@app.route('/api/ip', methods=['GET'])
+def ip():
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.connect(('8.8.8.8', 1))  # connect() for UDP doesn't send packets
+    local_ip_address = s.getsockname()[0]
+    return jsonify({'ip': local_ip_address})
 
 
 @app.route('/api/health', methods=['GET'])
