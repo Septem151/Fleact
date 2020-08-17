@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: frontend
+  namespace: fleact-namespace
 spec:
   selector:
     matchLabels:
@@ -18,8 +19,26 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: "fleact_frontend:v1"
+        image: "039706656811.dkr.ecr.us-east-2.amazonaws.com/fleact_frontend:latest"
+        ports:
+        - name: http
+          containerPort: 80
         lifecycle:
           preStop:
             exec:
               command: ["/usr/sbin/nginx","-s","quit"]
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+  namespace: fleact-namespace
+spec:
+  selector:
+    app: fleact
+    tier: frontend
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+  type: LoadBalancer

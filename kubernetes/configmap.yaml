@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fleact-config
+  namespace: fleact-namespace
+data:
+  ENV: "production"
