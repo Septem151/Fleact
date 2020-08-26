@@ -1,0 +1,26 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: nginx-ingress
+  namespace: fleact
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    # nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  tls:
+  - hosts:
+    - fleact.xyz
+    secretName: tls-secret
+  rules:
+  - host: fleact.xyz
+    http:
+      paths:
+        - path: /
+          backend:
+            serviceName: frontend
+            servicePort: 80
+        - path: /api
+          backend:
+            serviceName: backend
+            servicePort: 5000
