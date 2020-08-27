@@ -23,4 +23,7 @@
 **/yarn-debug.log*
 **/yarn-error.log*
 
-tls.*
+tls.crt
+tls.key
+kubernetes/kube_up.yaml
+kubernetes/node_autoscaler.yaml
