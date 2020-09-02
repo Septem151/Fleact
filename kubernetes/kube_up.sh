@@ -60,9 +60,9 @@ cluster_name    [Required] The Cluster's Name
 namespace       [Required] Namespace to deploy the app to
 nodegroup_name  [Required] The Node Group's Name
 node_type       [Required] The EC2 instance type to use in the Node Group
-node_count      [Optional] The default number of nodes in the Node Group (default: 2)
-min_node_count  [Optional] The minimum number of nodes in the Node Group (default: 1)
-max_node_count  [Optional] The maximum number of nodes in the Node Group (default: 3)
+node_count      [Optional] The default number of nodes in the Node Group (default: 4)
+min_node_count  [Optional] The minimum number of nodes in the Node Group (default: 4)
+max_node_count  [Optional] The maximum number of nodes in the Node Group (default: 6)
 EOF
 }
 
