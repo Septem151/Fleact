@@ -32,10 +32,6 @@ function config_cluster {
     # Nginx Ingress Controller
     kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v0.34.1/deploy/static/provider/aws/deploy.yaml;
     echo;
-
-    # Wait a few minutes for Ingress Controller to become accessible
-    echo "Waiting a few moments for Nginx Ingress Controller availability...";
-    sleep 3m;
 }
 
 function deploy_app {
@@ -48,6 +44,11 @@ function deploy_app {
     export TLS_CRT=$(cat ../tls.crt | base64 -w 0) TLS_KEY=$(cat ../tls.key | base64 -w 0);
 
     envsubst < templates/kube_up_template.yaml > kube_up.yaml;
+
+    # Wait a few minutes for Ingress Controller to become accessible
+    echo "Waiting a few moments for Nginx Ingress Controller availability...";
+    sleep 5m;
+
     kubectl apply -f kube_up.yaml;
 }
 
@@ -72,7 +73,7 @@ if [[ $# -ne 4 && $# -ne 7 ]]; then
 fi
 
 # Export environment variables for file substitution
-export CLUSTER_NAME=$1 NAMESPACE=$2 NODEGROUP_NAME=$3 NODE_TYPE=$4 NODE_COUNT="${5:-2}" MIN_NODE_COUNT="${6:-1}" MAX_NODE_COUNT="${7:-3}";
+export CLUSTER_NAME=$1 NAMESPACE=$2 NODEGROUP_NAME=$3 NODE_TYPE=$4 NODE_COUNT="${5:-4}" MIN_NODE_COUNT="${6:-4}" MAX_NODE_COUNT="${7:-6}";
 
 deploy_cluster;
 config_cluster;
